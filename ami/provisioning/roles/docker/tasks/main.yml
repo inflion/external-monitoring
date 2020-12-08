@@ -1,0 +1,22 @@
+---
+- name: install the latest version of python
+  become: true
+  yum:
+    name: python
+    state: latest
+
+- name: install the latest version of pip
+  become: true
+  yum:
+    name: python-pip
+    state: latest
+
+- name: install the latest version of setuptools
+  become: true
+  yum:
+    name: python-setuptools
+    state: latest
+
+- pip:
+    name: docker
+  become: true

@@ -1,0 +1,86 @@
+---
+- name: blackbox-expoter config dirctory
+  become: yes
+  file: path=/var/lib/blackbox/etc state=directory owner=root group=root mode=0755
+
+- name: alertmanager config dirctory
+  become: yes
+  file: path=/var/lib/alertmanager/etc state=directory owner=root group=root mode=0755
+
+- name: prometheus config dirctory
+  become: yes
+  file: path=/var/lib/prometheus/etc state=directory owner=root group=root mode=0755
+
+- name: prometheus tsdb dirctory
+  become: yes
+  file: path=/data/prometheus/tsdb state=directory owner=root group=root mode=0777
+
+- name: grafana data dirctory
+  become: yes
+  file: path=/data/grafana/data state=directory owner=root group=root mode=0777
+
+- name: grafana config dirctory
+  become: yes
+  file: path=/data/grafana/config state=directory owner=root group=root mode=0777
+
+- name: loki data dirctory
+  become: yes
+  file: path=/data/loki state=directory owner=root group=root mode=0777
+
+- name: loki config dirctory
+  become: yes
+  file: path=/var/lib/loki state=directory owner=root group=root mode=0777
+
+- name: Copy the blackbox-exporter config file
+  become: yes
+  template:
+    src: blackbox.yml
+    dest: /var/lib/blackbox/etc/blackbox.yml
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Copy the alertmanager config file
+  become: yes
+  template:
+    src: alertmanager.yml
+    dest: /var/lib/alertmanager/etc/alertmanager.yml
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Copy the alert rules file
+  become: yes
+  template:
+    src: alert.rules
+    dest: /var/lib/prometheus/etc/alert.rules
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Copy the prometheus config file
+  become: yes
+  template:
+    src: prometheus.yml
+    dest: /var/lib/prometheus/etc/prometheus.yml
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Copy the prometheus target file
+  become: yes
+  template:
+    src: targets.json
+    dest: /var/lib/prometheus/etc/targets.json
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Copy the loki config file
+  become: yes
+  template:
+    src: loki.conf
+    dest: /var/lib/loki/local-config.yml
+    owner: root
+    group: root
+    mode: 0644

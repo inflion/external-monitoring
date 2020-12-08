@@ -1,0 +1,7 @@
+inflion:
+  children:
+    prod:
+      children:
+        master:
+          hosts:
+            monitor.private.prod.inflion:

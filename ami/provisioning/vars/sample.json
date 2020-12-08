@@ -1,0 +1,5 @@
+{
+    "pagerduty_api_key": "YOUR_PAGERDUTY_API_KEY",
+    "slack_webhook_url": "YOUR_SLACK_WEBHOOK_URL",
+    "slack_channel": "YOUR_SLACK_CHANNEL"
+}

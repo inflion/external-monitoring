@@ -1,0 +1,7 @@
+- name: monitoring
+  hosts: default
+  become: true
+  roles:
+    - cloudalchemy.node-exporter
+    - docker
+    - grafana

@@ -1,0 +1,52 @@
+{
+  "variables": {
+    "aws_region": "{{env `AWS_REGION`}}",
+    "aws_profile": "{{env `AWS_PROFILE`}}"
+  },
+  "builders": [{
+    "type": "amazon-ebs",
+    "profile": "{{user `aws_profile`}}",
+    "region": "{{user `aws_region`}}",
+    "source_ami_filter": {
+      "filters": {
+        "name": "amzn2-ami-hvm-*-x86_64-gp2"
+      },
+      "owners": ["137112412989"],
+      "most_recent": true
+    },
+    "launch_block_device_mappings": [
+      {
+         "device_name": "/dev/sda1",
+         "volume_size": 32
+      }
+    ],
+    "instance_type": "t3.micro",
+    "ssh_username": "ec2-user",
+    "ssh_timeout": "5m",
+    "ami_name": "amzn-linux-2-with-docker-{{timestamp}}",
+    "tags": {
+      "Name": "amzn-linux2-with-docker",
+      "Base_AMI_ID": "{{ .SourceAMI }}",
+      "Base_AMI_NAME": "{{ .SourceAMIName }}"
+    }
+  }],
+
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": [
+        "sudo yum update -y",
+        "sudo yum install -y docker",
+        "sudo systemctl start docker",
+        "sudo systemctl enable docker",
+        "sudo usermod -a -G docker ec2-user",
+        "sudo curl -L https://github.com/docker/compose/releases/download/1.27.4/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose",
+        "sudo chmod +x /usr/local/bin/docker-compose"
+      ]
+    },
+    {
+      "type": "ansible",
+      "playbook_file": "./provisioning/playbook.yml"
+    }
+  ]
+}

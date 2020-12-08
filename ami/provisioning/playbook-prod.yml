@@ -1,0 +1,7 @@
+- name: prod
+  hosts: master:&prod
+  become: true
+  roles:
+    - cloudalchemy.node-exporter
+    - docker
+    - grafana

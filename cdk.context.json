@@ -1,0 +1,8 @@
+{
+  "availability-zones:account=583978876609:region=ap-northeast-1": [
+    "ap-northeast-1a",
+    "ap-northeast-1c",
+    "ap-northeast-1d"
+  ],
+  "ami:account=583978876609:filters.image-type.0=machine:filters.name.0=amzn-linux-2-with-docker-*:filters.state.0=available:owners.0=583978876609:region=ap-northeast-1": "ami-03eb17256506a2287"
+}

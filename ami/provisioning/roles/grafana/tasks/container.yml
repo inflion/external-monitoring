@@ -1,0 +1,60 @@
+- name: Create a blackbox-exporter container
+  docker_container:
+    network_mode: host
+    name: blackbox-exporter
+    image: prom/blackbox-exporter
+    command:
+      - '--config.file=/etc/blackbox/blackbox.yml'
+    state: started
+    restart: yes
+    restart_policy: always
+    ports:
+      - "9115:9115"
+    volumes:
+      - /var/lib/blackbox/etc:/etc/blackbox
+
+- name: Create a prometheus container
+  docker_container:
+    network_mode: host
+    name: prometheus
+    image: prom/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.retention.time=1y'
+      - '--storage.tsdb.path=/tsdb'
+    state: started
+    restart: yes
+    restart_policy: always
+    ports:
+      - "9090:9090"
+    volumes:
+      - /var/lib/prometheus/etc:/etc/prometheus
+      - /data/prometheus/tsdb:/tsdb
+
+- name: Create a alert manager container
+  docker_container:
+    network_mode: host
+    name: alertmanager
+    image: prom/alertmanager
+    command:
+      - '--config.file=/etc/alertmanager/alertmanager.yml'
+    state: started
+    restart: yes
+    restart_policy: always
+    ports:
+      - "9093:9093"
+    volumes:
+      - /var/lib/alertmanager/etc:/etc/alertmanager
+
+- name: Create a grafana container
+  docker_container:
+    network_mode: host
+    name: grafana
+    image: grafana/grafana
+    state: started
+    restart: yes
+    restart_policy: always
+    volumes:
+      - /data/grafana/data:/var/lib/grafana
+    ports:
+      - "3000:3000"
